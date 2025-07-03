@@ -1,7 +1,7 @@
 // order_dashboard.js - Handles Order Dashboard logic
 
-let activeOrder = null;     // Stores the current active order
-let activeGuestId = null;   // Tracks the currently selected guest
+let activeOrder = null; // Stores the current active order
+let activeGuestId = null; // Tracks the currently selected guest
 
 // ======== Initialization ========
 
@@ -17,14 +17,20 @@ if (!activeOrder || activeOrder.status === 'Closed') {
   alert('Invalid or inactive table. Redirecting...');
   window.location.href = 'index.html';
 } else {
-  // Populate dashboard
+  // Ensure pendingItems array exists for each guest
+  activeOrder.guests.forEach(g => {
+    if (!g.pendingItems) g.pendingItems = [];
+  });
+  
+  // Always select the first guest by default
+  activeGuestId = activeOrder.guests[0].id;
+
   document.getElementById('table-number').textContent = activeOrder.tableNumber;
   document.getElementById('table-total').textContent = activeOrder.total.toFixed(2);
   document.getElementById('time-seated').textContent = new Date(activeOrder.timestamps.seated).toLocaleTimeString();
-  document.getElementById('server-rating').textContent = 'N/A'; // Placeholder for future ratings
-
-  // Build guest tabs
+  document.getElementById('server-rating').textContent = 'N/A';
   buildGuestTabs(activeOrder.guests);
+  renderGuestOrder();
 }
 
 // ======== Build Guest Tabs ========
@@ -33,74 +39,92 @@ function buildGuestTabs(guests) {
   guestTabs.innerHTML = '';
 
   guests.forEach(guest => {
-    const tab = document.createElement('button');
-    tab.className = 'button';
+    const tab = document.createElement('div');
+    tab.className = 'pill-tab' + (guest.id === activeGuestId ? ' active' : '');
     tab.textContent = guest.name;
-    tab.onclick = () => showGuestOrder(guest.id);
+    tab.onclick = () => switchGuest(guest.id);
     guestTabs.appendChild(tab);
   });
-
-  // Show first guest's order by default
-  showGuestOrder(guests[0].id);
 }
 
-// ======== Show Guest's Order Bar ========
-function showGuestOrder(guestId) {
+function switchGuest(guestId) {
   activeGuestId = guestId;
-  const guest = activeOrder.guests.find(g => g.id === guestId);
+  buildGuestTabs(activeOrder.guests);
+  renderGuestOrder();
+}
+
+// ======== Render Guest Orders ========
+function renderGuestOrder() {
+  const guest = activeOrder.guests.find(g => g.id === activeGuestId);
   const orderBar = document.getElementById('order-bar');
   orderBar.innerHTML = `<h4>${guest.name}'s Order</h4>`;
 
-  if (guest.items.length === 0) {
-    orderBar.innerHTML += '<p>No items yet.</p>';
-  } else {
-    guest.items.forEach(item => {
-      const line = document.createElement('div');
-      line.textContent = `• ${item.name} - $${item.price.toFixed(2)}`;
-      orderBar.appendChild(line);
-    });
-  }
+  guest.items.forEach(item => {
+    orderBar.innerHTML += `<div class="order-item committed">${item.name} - $${item.price.toFixed(2)} <button class="void" onclick="voidItem('${guest.id}','${item.name}')">Void</button></div>`;
+  });
+
+  guest.pendingItems.forEach(item => {
+    orderBar.innerHTML += `<div class="order-item pending">${item.name} - $${item.price.toFixed(2)} <button onclick="removePendingItem('${guest.id}','${item.name}')">❌</button></div>`;
+  });
+
+  updateTotal();
 }
 
-// ======== Add Item to Active Guest ========
-function addItemToActiveGuest(name, price) {
+// ======== Add/Remove Items ========
+function addPendingItem(name, price) {
   const guest = activeOrder.guests.find(g => g.id === activeGuestId);
-  guest.items.push({ name: name, price: price });
-  activeOrder.total += price;
+  if (!guest) {
+    alert('Please select a guest before adding items.');
+    return;
+  }
+  guest.pendingItems.push({ name, price });
+  renderGuestOrder();
   saveOrders();
-  document.getElementById('table-total').textContent = activeOrder.total.toFixed(2);
-  showGuestOrder(activeGuestId);
+}
+
+function removePendingItem(guestId, name) {
+  const guest = activeOrder.guests.find(g => g.id === guestId);
+  guest.pendingItems = guest.pendingItems.filter(item => item.name !== name);
+  renderGuestOrder();
+  saveOrders();
+}
+
+function voidItem(guestId, name) {
+  const guest = activeOrder.guests.find(g => g.id === guestId);
+  guest.items = guest.items.filter(item => item.name !== name);
+  renderGuestOrder();
+  saveOrders();
 }
 
 // ======== Send Order ========
 function sendOrder() {
-  if (activeOrder.status === 'Seated') {
-    const confirmSend = confirm('Are you sure you want to send this order to the kitchen? You cannot undo this.');
-    if (confirmSend) {
-      activeOrder.status = 'Waiting on Drinks';
-      activeOrder.timestamps.drinksSent = new Date().toISOString();
-      saveOrders();
-      alert('Order sent to kitchen.');
-    }
-  } else {
-    alert('Order has already been sent.');
-  }
+  activeOrder.guests.forEach(guest => {
+    guest.items = guest.items.concat(guest.pendingItems);
+    guest.pendingItems = [];
+  });
+  activeOrder.status = 'Waiting on Drinks';
+  activeOrder.timestamps.drinksSent = new Date().toISOString();
+  renderGuestOrder();
+  saveOrders();
+  alert('Pending items sent to kitchen.');
 }
 
 // ======== Bill Out ========
 function billOut() {
-  document.getElementById('modal-total').textContent = activeOrder.total.toFixed(2);
-  document.getElementById('billOutModal').style.display = 'block';
-}
-
-function closeBillOutModal() {
-  document.getElementById('billOutModal').style.display = 'none';
-}
-
-document.getElementById('payButton').addEventListener('click', () => {
   activeOrder.status = 'Closed';
   activeOrder.timestamps.billed = new Date().toISOString();
   saveOrders();
   alert('Table billed out successfully!');
-  window.location.href = 'current_tables.html'; // Redirect back to Current Orders
-});
+  window.location.href = 'current_tables.html';
+}
+
+function updateTotal() {
+  let total = 0;
+  activeOrder.guests.forEach(g => {
+    total += g.items.reduce((sum, item) => sum + item.price, 0);
+    total += g.pendingItems.reduce((sum, item) => sum + item.price, 0);
+  });
+  activeOrder.total = total;
+  document.getElementById('table-total').textContent = total.toFixed(2);
+  saveOrders();
+}

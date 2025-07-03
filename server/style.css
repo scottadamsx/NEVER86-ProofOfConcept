@@ -180,3 +180,32 @@ header h2 {
   color: #333;
   margin-top: 1rem;
 }
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.order-item.pending {
+  color: #5a9bd6; /* Light blue for pending items */
+  font-style: italic;
+}
+
+.order-item.committed {
+  color: #007bff; /* Royal blue for sent items */
+  font-weight: 500;
+}
+
+.order-item button {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.order-item button.void {
+  color: #d11a2a; /* Red for void */
+}

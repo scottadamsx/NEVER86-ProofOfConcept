@@ -1,75 +1,168 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<style>
+    /* Additional styles for Order Dashboard enhancements */
+
+.header-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.header-card h2 {
+  color: #007bff;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.pill-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pill-tab {
+  background: #e3f0ff;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.pill-tab.active {
+  background: #007bff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.order-bar {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.menu-section h3 {
+  margin-top: 1.5rem;
+  color: #007bff;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.menu-item {
+  background: #e3f0ff;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.menu-item:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+.action-button {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #007bff;
+  transition: background 0.3s;
+}
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-card {
+    text-align: left;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+  .actions {
+    flex-direction: column;
+  }
+}
+  </style>
 </head>
 <body>
- <div class="sidebar">
-  <div class="logo">
-    <span class="logo-never">NEVER</span><span class="logo-86">86</span>
-    <div class="role-label" id="roleLabel">Server</div>
-  </div>
-  <nav>
-    <a href="index.html" class="active">Dashboard</a>
-    <a href="floorplan.html">Floor Plan</a>
-    <a href="current_tables.html">Current Orders</a>
-    <a href="new_table.html">New Table</a>
-  </nav>
+<div class="sidebar">
+<div class="logo">
+<span class="logo-never">NEVER</span><span class="logo-86">86</span>
+<div class="role-label">Server</div>
 </div>
-
-
-  <main>
-    <!-- Table Info -->
-    <header>
-      <h2>Table #<span id="table-number">...</span></h2>
-      <p>Total: $<span id="table-total">0.00</span></p>
-      <p>Time Seated: <span id="time-seated">--:--</span></p>
-      <p>Server Rating: <span id="server-rating">N/A</span></p>
-    </header>
-
-    <!-- Guest Tabs -->
-    <section>
-      <h3>Guest Orders</h3>
-      <div id="guest-tabs" class="tabs"></div>
-      <div id="order-bar" class="order-bar">
-        <p>No items yet.</p>
-      </div>
-    </section>
-
-    <!-- Menu Grid -->
-    <section>
-      <h3>Menu</h3>
-      <div class="grid">
-        <button class="button" onclick="addItemToActiveGuest('Burger', 12.99)">Burger</button>
-        <button class="button" onclick="addItemToActiveGuest('Fries', 4.99)">Fries</button>
-        <button class="button" onclick="addItemToActiveGuest('Coke', 1.99)">Coke</button>
-        <button class="button" onclick="addItemToActiveGuest('Salad', 6.99)">Salad</button>
-        <!-- Add more menu items here -->
-      </div>
-    </section>
-
-    <!-- Action Buttons -->
-    <div class="actions">
-      <button class="button" onclick="sendOrder()">Send Order</button>
-      <button class="button" onclick="billOut()">Bill Out</button>
-    </div>
-
-    <div id="billOutModal" class="modal">
-  <div class="modal-content">
-    <h2>Bill Out</h2>
-    <p>Table Total: $<span id="modal-total">0.00</span></p>
-    <button class="button" id="payButton">Pay</button>
-    <button class="button-secondary" onclick="closeBillOutModal()">Cancel</button>
-  </div>
+<nav>
+<a class="active" href="index.html">Dashboard</a>
+<a href="floorplan.html">Floor Plan</a>
+<a href="current_tables.html">Current Orders</a>
+<a href="new_table.html">New Table</a>
+</nav>
 </div>
-
-  </main>
-
-  <script src="js/portal.js"></script>
- <script src="js/order_dashboard.js"></script>
-
-</body>
+<main>
+<div class="header-card">
+<h2>Table #<span id="table-number">...</span></h2>
+<p>Total: $<span id="table-total">0.00</span></p>
+<p>Time Seated: <span id="time-seated">--:--</span></p>
+<p>Server Rating: <span id="server-rating">N/A</span></p>
+</div>
+<div class="pill-tabs" id="guest-tabs"></div>
+<div class="order-bar" id="order-bar">
+<h4>Guest Order</h4>
+<p>No items yet.</p>
+</div>
+<div class="menu-section"><h3>Appetizers</h3><div class="menu-grid"><button class="menu-item" onclick="addPendingItem('Bruschetta', 6.99)">Bruschetta</button><button class="menu-item" onclick="addPendingItem('Wings', 8.99)">Wings</button><button class="menu-item" onclick="addPendingItem('Spring Rolls', 5.99)">Spring Rolls</button><button class="menu-item" onclick="addPendingItem('Mozzarella Sticks', 7.49)">Mozzarella Sticks</button><button class="menu-item" onclick="addPendingItem('Stuffed Mushrooms', 6.49)">Stuffed Mushrooms</button><button class="menu-item" onclick="addPendingItem('Garlic Bread', 4.99)">Garlic Bread</button></div><h3>Mains</h3><div class="menu-grid" style="display:none;"><button class="menu-item" onclick="addPendingItem('Burger', 12.99)">Burger</button><button class="menu-item" onclick="addPendingItem('Steak', 18.99)">Steak</button><button class="menu-item" onclick="addPendingItem('Pasta Primavera', 11.99)">Pasta Primavera</button><button class="menu-item" onclick="addPendingItem('Chicken Parmesan', 15.99)">Chicken Parmesan</button><button class="menu-item" onclick="addPendingItem('Salmon Fillet', 17.99)">Salmon Fillet</button><button class="menu-item" onclick="addPendingItem('Veggie Stir Fry', 13.99)">Veggie Stir Fry</button><button class="menu-item" onclick="addPendingItem('BBQ Ribs', 19.99)">BBQ Ribs</button><button class="menu-item" onclick="addPendingItem('Fish and Chips', 14.99)">Fish and Chips</button><button class="menu-item" onclick="addPendingItem('Grilled Cheese', 9.99)">Grilled Cheese</button><button class="menu-item" onclick="addPendingItem('Beef Tacos', 12.49)">Beef Tacos</button><button class="menu-item" onclick="addPendingItem('Lamb Chops', 21.99)">Lamb Chops</button><button class="menu-item" onclick="addPendingItem('Shrimp Alfredo', 16.99)">Shrimp Alfredo</button></div><h3>Drinks</h3><div class="menu-grid" style="display:none;"><button class="menu-item" onclick="addPendingItem('Coke', 1.99)">Coke</button><button class="menu-item" onclick="addPendingItem('Water', 0.0)">Water</button><button class="menu-item" onclick="addPendingItem('Beer', 5.99)">Beer</button><button class="menu-item" onclick="addPendingItem('Iced Tea', 2.49)">Iced Tea</button><button class="menu-item" onclick="addPendingItem('Lemonade', 2.29)">Lemonade</button><button class="menu-item" onclick="addPendingItem('Red Wine', 7.99)">Red Wine</button><button class="menu-item" onclick="addPendingItem('White Wine', 7.99)">White Wine</button><button class="menu-item" onclick="addPendingItem('Espresso', 3.49)">Espresso</button><button class="menu-item" onclick="addPendingItem('Latte', 4.29)">Latte</button></div><h3>Sides</h3><div class="menu-grid" style="display:none;"><button class="menu-item" onclick="addPendingItem('Fries', 4.99)">Fries</button><button class="menu-item" onclick="addPendingItem('Caesar Salad', 5.99)">Caesar Salad</button><button class="menu-item" onclick="addPendingItem('Mashed Potatoes', 4.99)">Mashed Potatoes</button></div><h3>Misc</h3><div class="menu-grid" style="display:none;"><button class="menu-item" onclick="addPendingItem('Ketchup', 0.0)">Ketchup</button><button class="menu-item" onclick="addPendingItem('Cutlery', 0.0)">Cutlery</button><button class="menu-item" onclick="addPendingItem('Napkins', 0.0)">Napkins</button><button class="menu-item" onclick="addPendingItem('Hot Sauce', 0.0)">Hot Sauce</button><button class="menu-item" onclick="addPendingItem('Mustard', 0.0)">Mustard</button><button class="menu-item" onclick="addPendingItem('Chili Flakes', 0.0)">Chili Flakes</button><button class="menu-item" onclick="addPendingItem('Soy Sauce', 0.0)">Soy Sauce</button><button class="menu-item" onclick="addPendingItem('Salt', 0.0)">Salt</button><button class="menu-item" onclick="addPendingItem('Pepper', 0.0)">Pepper</button><button class="menu-item" onclick="addPendingItem('Lime Wedges', 0.0)">Lime Wedges</button></div></div>
+<div class="actions">
+<button class="action-button" onclick="sendOrder()">Send Order</button>
+<button class="action-button" onclick="billOut()">Bill Out</button>
+</div>
+<div class="modal" id="billOutModal">
+<div class="modal-content">
+<h2>Bill Out</h2>
+<p>Table Total: $<span id="modal-total">0.00</span></p>
+<button class="button" id="payButton">Pay</button>
+<button class="button-secondary" onclick="closeBillOutModal()">Cancel</button>
+</div>
+</div>
+</main>
+<script src="js/portal.js"></script>
+<script src="js/order_dashboard.js"></script>
+<script>
+document.querySelectorAll('.menu-section h3').forEach(header => {
+  header.style.cursor = 'pointer';
+  header.onclick = () => {
+    const grid = header.nextElementSibling;
+    grid.style.display = (grid.style.display === 'none') ? 'grid' : 'none';
+  };
+});
+</script></body>
 </html>
