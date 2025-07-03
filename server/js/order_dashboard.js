@@ -89,12 +89,18 @@ function sendOrder() {
 
 // ======== Bill Out ========
 function billOut() {
-  const confirmBill = confirm('Are you sure you want to bill out this table?');
-  if (confirmBill) {
-    activeOrder.status = 'Closed';
-    activeOrder.timestamps.billed = new Date().toISOString();
-    saveOrders();
-    alert('Table billed out.');
-    window.location.href = 'index.html';
-  }
+  document.getElementById('modal-total').textContent = activeOrder.total.toFixed(2);
+  document.getElementById('billOutModal').style.display = 'block';
 }
+
+function closeBillOutModal() {
+  document.getElementById('billOutModal').style.display = 'none';
+}
+
+document.getElementById('payButton').addEventListener('click', () => {
+  activeOrder.status = 'Closed';
+  activeOrder.timestamps.billed = new Date().toISOString();
+  saveOrders();
+  alert('Table billed out successfully!');
+  window.location.href = 'current_tables.html'; // Redirect back to Current Orders
+});

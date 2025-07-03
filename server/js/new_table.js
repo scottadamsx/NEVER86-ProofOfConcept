@@ -1,6 +1,34 @@
+function renderNewTableGrid() {
+  const grid = document.getElementById('table-grid');
+  const buttons = grid.querySelectorAll('button');
+  buttons.forEach(btn => {
+    const tableNum = parseInt(btn.textContent.replace('Table ', ''));
+    
+    // 🔥 Ensure click handler is reapplied
+    btn.onclick = () => selectTable(tableNum);
+
+    if (isTableOccupied(tableNum)) {
+      btn.style.display = 'none'; // Hide occupied tables
+    } else {
+      btn.style.display = 'inline-block'; // Show free tables
+    }
+  });
+}
+
+// Run render on page load
+window.addEventListener('DOMContentLoaded', () => {
+  renderNewTableGrid();
+});
+
 function startOrder() {
   const guestCountValue = document.getElementById('guest-count').value;
   const guestCount = guestCountValue === 'large' ? 12 : parseInt(guestCountValue);
+
+  const existingOrder = orders.find(o => o.tableNumber === selectedTable && o.status !== 'Closed');
+  if (existingOrder) {
+    alert(`Table ${selectedTable} is already occupied!`);
+    return;
+  }
 
   currentOrder = {
     id: crypto.randomUUID(),
@@ -30,6 +58,8 @@ function startOrder() {
   orders.push(currentOrder);
   saveOrders();
 
-  // 🚀 Redirect to the order dashboard
+  selectedTable = null; // Clear selected table
+
+  // Redirect to the order dashboard
   window.location.href = `order_dashboard.html?order=${currentOrder.id}`;
 }

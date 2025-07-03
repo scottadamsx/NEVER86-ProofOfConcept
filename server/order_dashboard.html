@@ -7,14 +7,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="sidebar">
-    <h1>NEVER86</h1>
-    <nav>
-      <a href="index.html">Dashboard</a>
-      <a href="floorplan.html">Floor Plan</a>
-      <a href="current_tables.html">Current Orders</a>
-    </nav>
+ <div class="sidebar">
+  <div class="logo">
+    <span class="logo-never">NEVER</span><span class="logo-86">86</span>
+    <div class="role-label" id="roleLabel">Server</div>
   </div>
+  <nav>
+    <a href="index.html" class="active">Dashboard</a>
+    <a href="floorplan.html">Floor Plan</a>
+    <a href="current_tables.html">Current Orders</a>
+    <a href="new_table.html">New Table</a>
+  </nav>
+</div>
+
 
   <main>
     <!-- Table Info -->
@@ -51,6 +56,16 @@
       <button class="button" onclick="sendOrder()">Send Order</button>
       <button class="button" onclick="billOut()">Bill Out</button>
     </div>
+
+    <div id="billOutModal" class="modal">
+  <div class="modal-content">
+    <h2>Bill Out</h2>
+    <p>Table Total: $<span id="modal-total">0.00</span></p>
+    <button class="button" id="payButton">Pay</button>
+    <button class="button-secondary" onclick="closeBillOutModal()">Cancel</button>
+  </div>
+</div>
+
   </main>
 
   <script src="js/portal.js"></script>

@@ -5,16 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Current Orders</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
   <div class="sidebar">
-    <h1>NEVER86</h1>
-    <nav>
-      <a href="index.html">Dashboard</a>
-      <a href="floorplan.html">Floor Plan</a>
-      <a href="current_tables.html" class="active">Current Orders</a>
-    </nav>
+  <div class="logo">
+    <span class="logo-never">NEVER</span><span class="logo-86">86</span>
+    <div class="role-label" id="roleLabel">Server</div>
   </div>
+  <nav>
+    <a href="index.html" >Dashboard</a>
+    <a href="floorplan.html">Floor Plan</a>
+    <a href="current_tables.html" class="active">Current Orders</a>
+    <a href="new_table.html">New Table</a>
+  </nav>
+</div>
+
 
   <main>
     <header>
@@ -25,6 +32,8 @@
     <section id="current-orders" class="grid">
       <!-- Dynamic active orders will render here -->
     </section>
+    <h3>Previous Orders</h3>
+<section id="previous-orders" class="grid"></section>
   </main>
 
   <script src="js/portal.js"></script>

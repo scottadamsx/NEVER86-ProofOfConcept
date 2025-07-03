@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>n86</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEVER86 - Restaurant Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="home.css" />
 </head>
 <body>
-    <h1>never 86</h1>
-    <p>welcome to never86, please sign in!</p>
-    <label for="username"></label>
-    <input id="username"></input>
+  <header class="top-nav">
+    <div class="logo">NEVER86</div>
+    <nav>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Support</a>
+      <a href="#" class="button-dark">Try for Free</a>
+    </nav>
+  </header>
 
-     <label for="password"></label>
-    <input id="password"></input>
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Streamline your <br><span class="highlight">Restaurant Operations</span></h1>
+        <p>Our intuitive platform makes it easy to manage staff, orders, and inventory, all in real-time.</p>
+        <a href="#" class="button">Get Started</a>
+      </div>
 
-    <button id="login">Log-In</button>
+      <div class="login-card">
+        <h3>Sign In</h3>
+        <p>Please sign in as <b>Server</b>, <b>Manager</b>, or <b>Kitchen</b> to continue.</p>
 
-    <script src="script.js"></script>
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Enter your name" />
+
+        <label for="username">Role</label>
+        <input id="username" type="text" placeholder="Enter role (server, manager, kitchen)" />
+
+        <button id="login" class="button">Log In</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
