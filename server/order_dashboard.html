@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <h1>NEVER86</h1>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="floorplan.html">Floor Plan</a>
+      <a href="current_tables.html">Current Orders</a>
+    </nav>
+  </div>
+
+  <main>
+    <!-- Table Info -->
+    <header>
+      <h2>Table #<span id="table-number">...</span></h2>
+      <p>Total: $<span id="table-total">0.00</span></p>
+      <p>Time Seated: <span id="time-seated">--:--</span></p>
+      <p>Server Rating: <span id="server-rating">N/A</span></p>
+    </header>
+
+    <!-- Guest Tabs -->
+    <section>
+      <h3>Guest Orders</h3>
+      <div id="guest-tabs" class="tabs"></div>
+      <div id="order-bar" class="order-bar">
+        <p>No items yet.</p>
+      </div>
+    </section>
+
+    <!-- Menu Grid -->
+    <section>
+      <h3>Menu</h3>
+      <div class="grid">
+        <button class="button" onclick="addItemToActiveGuest('Burger', 12.99)">Burger</button>
+        <button class="button" onclick="addItemToActiveGuest('Fries', 4.99)">Fries</button>
+        <button class="button" onclick="addItemToActiveGuest('Coke', 1.99)">Coke</button>
+        <button class="button" onclick="addItemToActiveGuest('Salad', 6.99)">Salad</button>
+        <!-- Add more menu items here -->
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button class="button" onclick="sendOrder()">Send Order</button>
+      <button class="button" onclick="billOut()">Bill Out</button>
+    </div>
+  </main>
+
+  <script src="js/portal.js"></script>
+ <script src="js/order_dashboard.js"></script>
+
+</body>
+</html>
