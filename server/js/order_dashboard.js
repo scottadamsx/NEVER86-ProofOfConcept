@@ -4,15 +4,10 @@ let activeOrder = null; // Stores the current active order
 let activeGuestId = null; // Tracks the currently selected guest
 
 // ======== Initialization ========
-
-// Get orderId from URL
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get('order');
-
-// Find the order in orders[]
 activeOrder = findOrderById(orderId);
 
-// Validate
 if (!activeOrder || activeOrder.status === 'Closed') {
   alert('Invalid or inactive table. Redirecting...');
   window.location.href = 'index.html';
@@ -21,10 +16,8 @@ if (!activeOrder || activeOrder.status === 'Closed') {
   activeOrder.guests.forEach(g => {
     if (!g.pendingItems) g.pendingItems = [];
   });
-  
-  // Always select the first guest by default
-  activeGuestId = activeOrder.guests[0].id;
 
+  activeGuestId = activeOrder.guests[0].id;
   document.getElementById('table-number').textContent = activeOrder.tableNumber;
   document.getElementById('table-total').textContent = activeOrder.total.toFixed(2);
   document.getElementById('time-seated').textContent = new Date(activeOrder.timestamps.seated).toLocaleTimeString();
@@ -33,7 +26,6 @@ if (!activeOrder || activeOrder.status === 'Closed') {
   renderGuestOrder();
 }
 
-// ======== Build Guest Tabs ========
 function buildGuestTabs(guests) {
   const guestTabs = document.getElementById('guest-tabs');
   guestTabs.innerHTML = '';
@@ -53,7 +45,6 @@ function switchGuest(guestId) {
   renderGuestOrder();
 }
 
-// ======== Render Guest Orders ========
 function renderGuestOrder() {
   const guest = activeOrder.guests.find(g => g.id === activeGuestId);
   const orderBar = document.getElementById('order-bar');
@@ -70,7 +61,6 @@ function renderGuestOrder() {
   updateTotal();
 }
 
-// ======== Add/Remove Items ========
 function addPendingItem(name, price) {
   const guest = activeOrder.guests.find(g => g.id === activeGuestId);
   if (!guest) {
@@ -96,7 +86,6 @@ function voidItem(guestId, name) {
   saveOrders();
 }
 
-// ======== Send Order ========
 function sendOrder() {
   activeOrder.guests.forEach(guest => {
     guest.items = guest.items.concat(guest.pendingItems);
@@ -109,7 +98,6 @@ function sendOrder() {
   alert('Pending items sent to kitchen.');
 }
 
-// ======== Bill Out ========
 function billOut() {
   activeOrder.status = 'Closed';
   activeOrder.timestamps.billed = new Date().toISOString();
