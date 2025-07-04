@@ -5,11 +5,13 @@ function renderCurrentOrders() {
   activeContainer.innerHTML = '';
   previousContainer.innerHTML = '';
 
+  let hasActiveOrders = false;
+  let hasPreviousOrders = false;
+
   orders.forEach(order => {
     const card = document.createElement('div');
     card.className = 'card';
 
-    // Common fields
     card.innerHTML = `
       <h4>Table ${order.tableNumber}</h4>
       <p>Status: ${order.status}</p>
@@ -17,17 +19,35 @@ function renderCurrentOrders() {
     `;
 
     if (order.status !== 'Closed' && order.status !== 'Seated') {
-      // Only show active orders that have been sent
       activeContainer.appendChild(card);
+      hasActiveOrders = true;
     } else if (order.status === 'Closed') {
-      // Add time billed out for previous orders
       const billedTime = order.timestamps.billed
         ? new Date(order.timestamps.billed).toLocaleTimeString()
         : 'N/A';
       card.innerHTML += `<p>Billed Out: ${billedTime}</p>`;
       previousContainer.appendChild(card);
+      hasPreviousOrders = true;
     }
   });
+
+  // Show empty state boxes if no orders
+  if (!hasActiveOrders) {
+    activeContainer.innerHTML = `
+      <div class="empty-box">
+        <h3>Current Tables</h3>
+        <p>You have no current tables, go ask your manager for shit to do.</p>
+      </div>
+    `;
+  }
+  if (!hasPreviousOrders) {
+    previousContainer.innerHTML = `
+      <div class="empty-box">
+        <h3>Previous Tables</h3>
+        <p>You have no previous tables, check back later.</p>
+      </div>
+    `;
+  }
 }
 
 // Render on page load

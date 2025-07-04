@@ -209,3 +209,23 @@ header h2 {
 .order-item button.void {
   color: #d11a2a; /* Red for void */
 }
+
+.empty-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 2rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.empty-box h3 {
+  color: #007bff;
+  margin-bottom: 0.5rem;
+}
+
+.empty-box p {
+  color: #666;
+  font-size: 0.95rem;
+  font-style: italic;
+}

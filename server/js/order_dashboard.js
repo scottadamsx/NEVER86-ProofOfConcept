@@ -1,3 +1,4 @@
+
 // order_dashboard.js - Handles Order Dashboard logic
 
 let activeOrder = null; // Stores the current active order
@@ -93,14 +94,31 @@ function sendOrder() {
   });
   activeOrder.status = 'Waiting on Drinks';
   activeOrder.timestamps.drinksSent = new Date().toISOString();
-  renderGuestOrder();
+
+  // Update the order in the main orders array
+  const orderIndex = orders.findIndex(o => o.id === activeOrder.id);
+  if (orderIndex !== -1) {
+    orders[orderIndex] = activeOrder;
+  }
+
   saveOrders();
+  renderGuestOrder();
   alert('Pending items sent to kitchen.');
+
+  // Optional: navigate to Current Orders
+  window.location.href = 'current_tables.html';
 }
 
 function billOut() {
   activeOrder.status = 'Closed';
   activeOrder.timestamps.billed = new Date().toISOString();
+
+  // Update the order in the main orders array
+  const orderIndex = orders.findIndex(o => o.id === activeOrder.id);
+  if (orderIndex !== -1) {
+    orders[orderIndex] = activeOrder;
+  }
+
   saveOrders();
   alert('Table billed out successfully!');
   window.location.href = 'current_tables.html';
