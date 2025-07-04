@@ -3,53 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEVER86 Server Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>NEVER86 Server Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Sidebar -->
   <div class="sidebar">
   <div class="logo">
     <span class="logo-never">NEVER</span><span class="logo-86">86</span>
-    <div class="role-label" id="roleLabel">Server</div>
   </div>
+  <div class="role-label">Server</div>
   <nav>
     <a href="index.html" class="active">Dashboard</a>
-    <a href="floorplan.html">Floor Plan</a>
-    <a href="current_tables.html">Current Orders</a>
     <a href="new_table.html">New Table</a>
+    <a href="floorplan.html">Floor Plan</a>
+    <a href="todo.html">To-Do</a>
+    <a href="current_tables.html">My Tables</a>
+    <a href="messages.html">Messages & Alerts</a>
+    <a href="my_shifts.html">My Shifts</a>
+    <a href="send_nelert.html">📢 Send a Nelert</a>
   </nav>
 </div>
 
+
+  <!-- Main Content -->
   <main>
     <header>
-      <h2>Welcome, Server</h2>
-      <p>Manage your tables, take orders, and keep operations running smoothly.</p>
+      <h2>Server Dashboard</h2>
+      <p>Welcome back, Sarah! Here’s how your shift is going.</p>
     </header>
 
+    <!-- Shift Summary -->
     <section class="grid">
       <div class="card">
-        <h3>Active Tables</h3>
-        <p>View and manage all currently active tables.</p>
-        <a href="current_tables.html" class="button">View Tables</a>
+        <h3>Total Sales</h3>
+        <p>$450.54</p>
       </div>
       <div class="card">
-        <h3>Place New Order</h3>
-        <p>Start a new order for any table quickly and easily.</p>
-        <a href="new_table.html" class="button">Start Order</a>
+        <h3>Average Table Time</h3>
+        <p>52m</p>
       </div>
       <div class="card">
-        <h3>Order History</h3>
-        <p>Review previous orders and check details.</p>
-        <a href="current_tables.html" class="button">View History</a>
-      </div>
-      <div class="card">
-        <h3>Send Message</h3>
-        <p>Communicate with the kitchen or manager directly.</p>
-        <a href="#" class="button">Message Now</a>
+        <h3>Covers</h3>
+        <p>24</p>
       </div>
     </section>
+
+    <!-- Active Tables -->
+    <section>
+      <h3>Active Tables</h3>
+      <div class="grid">
+        <div class="card">
+          <h3>Table 12</h3>
+          <p>Status: Waiting on Drinks</p>
+        </div>
+        <div class="card">
+          <h3>Table 13</h3>
+          <p>Status: Waiting on Food</p>
+        </div>
+        <div class="card">
+          <h3>Table 7</h3>
+          <p>Status: Seated</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- To-Do Flow -->
+    <section>
+      <h3>What Can I Do?</h3>
+      <div class="card">
+        <p>✅ Take drink order for Table 12 (Last Checked: 14m)</p>
+      </div>
+      <div class="card">
+        <p>🚨 Quality check on Table 13 (0:43 left)</p>
+      </div>
+    </section>
+
+    <!-- Chat -->
+    <section>
+      <h3>Chat</h3>
+      <div class="card">
+        <p><strong>Manager:</strong> 86 Salmon tonight, push cheesecake.</p>
+      </div>
+    </section>
+
   </main>
-  <script src="js/portal.js"></script>
 </body>
 </html>
